@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEET Biology Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #1c1f24;
+        }
+
+        .error-message {
+            text-align: center;
+            background-color: #ff4c4c;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        .quiz-container {
+            background-color: #3a4750;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+        .question-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            color: #b3b3b3;
+            font-size: 16px;
+        }
+        .question {
+            font-size: 20px;
+            margin-bottom: 25px;
+            color: #ffffff;
+        }
+        .options {
+            display: grid;
+            gap: 15px;
+        }
+        .option {
+            background-color: #3a3a3a;
+            border: none;
+            color: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+            text-align: left;
+            font-size: 16px;
+        }
+        .option:hover {
+            background-color: #4a4a4a;
+            transform: translateY(-2px);
+        }
+        .option:active {
+            transform: translateY(1px);
+        }
+        .next-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #3a3a3a;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 25px;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+        .next-btn:hover {
+            background-color: #4a4a4a;
+        }
+        .result {
+            text-align: center;
+            font-size: 24px;
+            color: #ffffff;
+            margin-top: 20px;
+        }
+
+
+
+        .spinner {
+  height: 60px;
+  width: 60px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -30px 0 0 -30px; /* 30px is half of 60px */
+  -webkit-animation: rotation 1s infinite linear;
+  -moz-animation: rotation 1s infinite linear;
+  -o-animation: rotation 1s infinite linear;
+  animation: rotation 1s infinite linear;
+  border: 6px solid rgba(0, 0, 0, .2);
+  border-radius: 100%;
+}
+
+.spinner:before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: -6px;
+  top: -6px;
+  height: 100%;
+  width: 100%;
+  border-top: 6px solid rgba(0, 0, 0, .8);
+  border-left: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-radius: 100%;
+}
+
+@-webkit-keyframes rotation {
+  from { -webkit-transform: rotate(0deg); }
+  to { -webkit-transform: rotate(359deg); }
+}
+@-moz-keyframes rotation {
+  from { -moz-transform: rotate(0deg); }
+  to { -moz-transform: rotate(359deg); }
+}
+@-o-keyframes rotation {
+  from { -o-transform: rotate(0deg); }
+  to { -o-transform: rotate(359deg); }
+}
+@keyframes rotation {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(359deg); }
+}
+
+        
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>NEET Biology Quiz</h1>
+        <div id="question-container">
+            <div class="question-info">
+                <span id="question-number"></span>
+                <span id="timer">Time left: 30s</span>
+            </div>
+            <p class="question" id="question-text"></p>
+            <div class="options" id="options-container">
+                <div class="spinner"></div>
+            </div>
+        </div>
+        <button class="next-btn" id="next-btn">Next Question</button>
+        <p class="result" id="result"></p>
+    </div>
+
+    <script>
+
+        const questionNumber = document.getElementById("question-number");
+        const timerElement = document.getElementById("timer");
+        const questionText = document.getElementById("question-text");
+        const optionsContainer = document.getElementById("options-container");
+        const nextBtn = document.getElementById("next-btn");
+        const result = document.getElementById("result");
+
+
+        function extractBeforeAns(text) {
+            return text.replace(/\s*Ans\s*$/, '').replace(/\s*Ans\s*$/, '');
+        }
+        
+
+
+        async function getData() {
+            const chapter_name = sessionStorage.getItem('selectedChapter')
+            // console.log(chapter_name)
+            const url = `https://quiz-api-for-neet.onrender.com/fetch_questions/${chapter_name}`;
+            try {
+              const response = await fetch(url);
+              if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+              }
+          
+              const json = await response.json();
+            //   console.log(json)
+              return json
+              //console.log(json);
+            } catch (error) {
+              console.error(error.message);
+      
+             
+            }
+          }
+          
+
+          function loadQuestion(questions) {
+            const question = questions[currentQuestion];
+            questionNumber.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+            questionText.textContent = question.question;
+        
+            // Clear the options container
+            optionsContainer.innerHTML = "";
+        
+            // Create an array from the new option fields in the JSON
+            const options = [question.option1, question.option2, question.option3, question.option4];
+        
+            // Loop through the options and create buttons for each
+            options.forEach((option, index) => {
+                const button = document.createElement("button");
+                button.classList.add("option");
+                button.classList.add(`opt${index}`);
+                button.textContent = extractBeforeAns(option); 
+                button.addEventListener("click", () => selectOption(index,questions));
+                optionsContainer.appendChild(button); 
+            });
+        
+            // Hide the "Next" button initially and reset result text
+            nextBtn.style.display = "none";
+            result.textContent = "";
+        
+            // Start the timer
+            startTimer(questions);
+        }
+        
+
+        function alphaToNumber(alpha){
+            options = ["(a)","(b)","(c)","(d)"]
+            return options.indexOf(alpha)
+        }
+
+
+        getData()
+        .then(questions => {
+          // If questions are successfully retrieved, clear the optionsContainer and load questions
+          optionsContainer.innerHTML = ""; 
+          loadQuestion(questions);
+          nextBtn.addEventListener("click", () => nextQuestion(questions));
+        })
+        .catch(error => {
+          // If there's an error, display an error message in the optionsContainer
+          console.error('Error fetching questions:', error);
+          optionsContainer.innerHTML = `
+            <div class="error-message">
+              <h1>Failed to Fetch Data</h1>
+              <p style="font-weight: bold; font-size: 1.5em; color: white; text-align: center;">
+                Redirecting back....
+              </p>
+            </div>`;
+          
+          // Redirect to chapter_list.html after a delay (e.g., 3000 milliseconds = 3 seconds)
+          setTimeout(() => {
+            window.location.href = 'chapter_list.html';
+          }, 3000); // Change the time as needed
+        });
+      
+      
+
+
+        let currentQuestion = 0;
+        let score = 0;
+        let timer;
+
+
+      
+
+        function selectOption(index,questions) {
+            clearInterval(timer);
+            const options = document.querySelectorAll(".option");
+            options.forEach(option => option.disabled = true);
+            
+            if (index === alphaToNumber(questions[currentQuestion].answere)) {
+                document.getElementsByClassName(`opt${index}`)[0].style.backgroundColor = "#4CAF50"; // green
+                score++;
+             
+            
+            } else {
+                document.getElementsByClassName(`opt${index}`)[0].style.backgroundColor = "#F44336";
+                document.getElementsByClassName(`opt${alphaToNumber(questions[currentQuestion].answere)}`)[0].style.backgroundColor = "#4CAF50"; // green
+            }
+
+            nextBtn.style.display = "block";
+        }
+
+        function nextQuestion(questions) {
+            currentQuestion++;
+
+            if (currentQuestion < questions.length) {
+                loadQuestion(questions);
+            } else {
+                //showResult(questions);
+                sessionStorage.setItem('score', score);
+                sessionStorage.setItem('total_questions', questions.length);
+                nextBtn.innerText = "Submit"
+                window.location.href = 'result.html'
+            }
+        }
+
+        function showResult(questions) {
+            questionNumber.textContent = "";
+            timerElement.textContent = "";
+            questionText.textContent = "Quiz Completed!";
+            optionsContainer.innerHTML = "";
+            //nextBtn.style.display = "visible";
+            nextBtn.setAttribute("href","https://stackoverflow.com/questions/47375298/add-style-with-javascript")
+            result.textContent = `You scored ${score} out of ${questions.length}`;
+
+        }
+
+        function startTimer(questions) {
+            let timeLeft = 30;
+            timerElement.textContent = `Time left: ${timeLeft}s`;
+            timer = setInterval(() => {
+                timeLeft--;
+                timerElement.textContent = `Time left: ${timeLeft}s`;
+                if (timeLeft === 0) {
+                    clearInterval(timer);
+                    nextQuestion(questions);
+                }
+            }, 1000);
+        }
+
+
+
+        function storeResult(){
+            resultData.push({
+                status:option
+            })
+        }
+
+        
+        //loadQuestion();
+    </script>
+</body>
+</html>

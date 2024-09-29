@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Result Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1c1f24;
+            --secondary-color: #121417;
+            --accent-color: #3a4750;
+            --background-color: #0b0c0f;
+            --text-color: #e5e7eb;
+            --btn-color: #536878;
+            --btn-hover-color: #4a5965;
+            --highlight-color: #4caf50;
+            --error-color: #f44336;
+            --white: #ffffff;
+            --font-family: 'Roboto', Arial, sans-serif;
+            --border-radius: 10px;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .dashboard {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: var(--primary-color);
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1, h2, h3 {
+            color: var(--text-color);
+        }
+
+        .results-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: var(--secondary-color);
+            border-radius: var(--border-radius);
+        }
+
+        .score-container {
+            text-align: center;
+        }
+
+        .score {
+            font-size: 3em;
+            font-weight: bold;
+            /*color: var(--highlight-color);*/
+            color: var(--error-color);
+        }
+
+        .feedback {
+            font-style: italic;
+            margin-top: 10px;
+            color: var(--text-color);
+        }
+
+        .insights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .insight-card {
+            padding: 20px;
+            background-color: var(--accent-color);
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .insight-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .insight-card h3 {
+            margin-top: 0;
+            color: var(--highlight-color);
+        }
+
+        .chart-container {
+            margin: 30px 0;
+            padding: 20px;
+            padding-bottom: 14vh;
+            background-color: var(--secondary-color);
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            width: 60vh;
+            height: 60vh;
+            text-align: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--btn-color);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 1em;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--btn-hover-color);
+            transform: translateY(-2px);
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        .number{
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                margin: 20px;
+                padding: 20px;
+            }
+
+            .results-summary {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .insights {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <header>
+            <h1>Quiz Result Dashboard</h1>
+        </header>
+        <div class="results-summary">
+            <div class="score-container">
+                <h2 class="color">Your Score</h2>
+                <span class="score color">15%</span>
+            </div>
+            <div>
+                <p>You answered <strong class="correct-ans"></strong> questions correctly out of <strong class="total-ques"></strong>.</p>
+                <p class="feedback"></p>
+            </div>
+        </div>
+        <div class="insights">
+            <div class="insight-card">
+                <h3 class="color">Correct Questions Answered</h3>
+                <p class="correct-ans number"></p>
+                <!-- <p><strong>3 seconds</strong></p> -->
+            </div>
+            <div class="insight-card">
+                <h3 class="color">Wrong Question Answered</h3>
+                <p class="wrong-ques number">Question 12</p>
+              
+            </div>
+            <div class="insight-card">
+                <h3 class="color">Total Question Solved</h3>
+                <p class="total-ques number"></p>
+            </div>
+            <!-- --------------------- -->
+        </div>
+        <div class="chart-container">
+            <h2>Score Breakdown</h2>
+            <canvas id="scoreBreakdownChart" width="300" height="200"></canvas>
+        </div>
+
+        <div class="action-buttons">
+            <a href="#" class="btn">Retake Quiz</a>
+            <a href="#" class="btn">Review Answers</a>
+            <a href="#" class="btn">Share Results</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const scoreBreakdownCtx = document.getElementById('scoreBreakdownChart').getContext('2d');
+       
+        const correct_ans_ele = document.querySelectorAll(".correct-ans")
+        const total_ques_ele = document.querySelectorAll(".total-ques")
+        const score = sessionStorage.getItem('score')
+        const total_questions = sessionStorage.getItem('total_questions')
+        const feedback = document.querySelector(".feedback")
+        const wrong_ans = total_questions - score
+        const message = ["Mistakes are proof that you are trying.","Your hard work is paying off; keep reaching for the stars!"]
+
+        function displayScore(){
+            document.querySelector(".wrong-ques").innerText = wrong_ans
+            document.querySelector(".wrong-ques").style.color = "#f44336"
+            const percentage = (score/total_questions) * 100
+            correct_ans_ele.textContent = score
+            document.querySelector(".score").innerText = parseInt(percentage)+ "%"
+            total_ques_ele.forEach(el => el.innerText = total_questions);
+            correct_ans_ele.forEach(el => {
+                el.textContent = score
+                el.style.color = "#4caf50"
+            });
+
+            if (percentage<= 75){
+                document.querySelectorAll(".color").forEach(ele => {
+                    ele.style.color = "#f44336"
+                    feedback.style.color = "#f44336"
+                    feedback.innerText = message[0]
+                })
+            }else{
+                document.querySelectorAll(".color").forEach(ele => {
+                    ele.style.color = "#4caf50"
+                    feedback.style.color = "#4caf50"
+                    feedback.innerText = message[1]
+                })
+            }
+        }
+
+
+
+        const scoreBreakdownChart = new Chart(scoreBreakdownCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Correct Answers', 'Incorrect Answers'],
+                datasets: [{
+                    data: [score, wrong_ans],
+                    backgroundColor: ['#4caf50', '#f44336'],
+                    borderColor: ['#1c1f24', '#1c1f24'],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#e5e7eb'
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Score Breakdown',
+                        color: '#e5e7eb'
+                    }
+                }
+            }
+        });
+
+
+
+
+
+        displayScore()
+    </script>
+</body>
+</html>

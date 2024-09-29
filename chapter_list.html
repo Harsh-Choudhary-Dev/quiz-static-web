@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Chapter Selection</title>
+    <style>
+        :root {
+            --primary-color: #1c1f24;
+            --secondary-color: #121417;
+            --accent-color: #3a4750;
+            --background-color: #0b0c0f;
+            --text-color: #e5e7eb;
+            --btn-color: #536878;
+            --btn-hover-color: #4a5965;
+            --white: #ffffff;
+            --font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: var(--font-family);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: background-color 0.5s;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .quiz-description {
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .quiz-chapters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .chapter-card {
+            background-color: var(--accent-color);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .chapter-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .chapter-btn {
+            background-color: var(--btn-color);
+            color: var(--white);
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.3s;
+            width: 100%;
+        }
+
+        .chapter-btn:hover {
+            background-color: var(--btn-hover-color);
+            transform: scale(1.05);
+        }
+
+        footer {
+            background-color: var(--secondary-color);
+            text-align: center;
+            padding: 15px;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Select a Chapter for the Quiz</h1>
+    </header>
+    <main>
+        <div class="quiz-description">
+            <p>Welcome to the Quiz Application! Choose a chapter below to test your knowledge.</p>
+        </div>
+        <section class="quiz-chapters">
+            <div class="chapter-card">
+                <h3>The Living World</h3>
+                <p>Overview: CH_1</p>
+                <button class="chapter-btn" data-chapter="CH_1">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Biological Classification</h3>
+                <p>Overview: CH_2</p>
+                <button class="chapter-btn" data-chapter="CH_2">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Plant Kingdom</h3>
+                <p>Overview: CH_3</p>
+                <button class="chapter-btn" data-chapter="CH_3">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Animal Kingdom</h3>
+                <p>Overview: CH_4</p>
+                <button class="chapter-btn" data-chapter="CH_4">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Morphology of Flowering Plants</h3>
+                <p>Overview: CH_5</p>
+                <button class="chapter-btn" data-chapter="CH_5">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Anatomy of Flowering Plants</h3>
+                <p>Overview: CH_6</p>
+                <button class="chapter-btn" data-chapter="CH_6">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Structural Organisation in Animals</h3>
+                <p>Overview: CH_7</p>
+                <button class="chapter-btn" data-chapter="CH_7">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Cell: The Unit of Life</h3>
+                <p>Overview: CH_8</p>
+                <button class="chapter-btn" data-chapter="CH_8">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Biomolecules</h3>
+                <p>Overview: CH_9</p>
+                <button class="chapter-btn" data-chapter="CH_9">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Cell Cycle and Cell Division</h3>
+                <p>Overview: CH_10</p>
+                <button class="chapter-btn" data-chapter="CH_10">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Transport in Plants</h3>
+                <p>Overview: CH_11</p>
+                <button class="chapter-btn" data-chapter="CH_11">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Photosynthesis in Higher Plants</h3>
+                <p>Overview: CH_12</p>
+                <button class="chapter-btn" data-chapter="CH_12">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Respiration in Plants</h3>
+                <p>Overview: CH_13</p>
+                <button class="chapter-btn" data-chapter="CH_13">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Plant Growth and Development</h3>
+                <p>Overview: CH_14</p>
+                <button class="chapter-btn" data-chapter="CH_14">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Digestion and Absorption</h3>
+                <p>Overview: CH_15</p>
+                <button class="chapter-btn" data-chapter="CH_15">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Breathing and Exchange of Gases</h3>
+                <p>Overview: CH_16</p>
+                <button class="chapter-btn" data-chapter="CH_16">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Body Fluids and Circulation</h3>
+                <p>Overview: CH_17</p>
+                <button class="chapter-btn" data-chapter="CH_17">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Locomotion and Movement</h3>
+                <p>Overview: CH_18</p>
+                <button class="chapter-btn" data-chapter="CH_18">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Sexual Reproduction in Flowering Plants</h3>
+                <p>Overview: CH_19</p>
+                <button class="chapter-btn" data-chapter="CH_19">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Human Reproduction</h3>
+                <p>Overview: CH_20</p>
+                <button class="chapter-btn" data-chapter="CH_20">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Reproductive Health</h3>
+                <p>Overview: CH_21</p>
+                <button class="chapter-btn" data-chapter="CH_21">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Reproduction in Organisms</h3>
+                <p>Overview: CH_22</p>
+                <button class="chapter-btn" data-chapter="CH_22">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Sexual Reproduction in Flowering Plants</h3>
+                <p>Overview: CH_23</p>
+                <button class="chapter-btn" data-chapter="CH_23">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Human Reproduction</h3>
+                <p>Overview: CH_24</p>
+                <button class="chapter-btn" data-chapter="CH_24">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Reproductive Health</h3>
+                <p>Overview: CH_25</p>
+                <button class="chapter-btn" data-chapter="CH_25">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Principles of Inheritance and Variation</h3>
+                <p>Overview: CH_26</p>
+                <button class="chapter-btn" data-chapter="CH_26">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Molecular Basis of Inheritance</h3>
+                <p>Overview: CH_27</p>
+                <button class="chapter-btn" data-chapter="CH_27">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Evolution</h3>
+                <p>Overview: CH_28</p>
+                <button class="chapter-btn" data-chapter="CH_28">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Human Health and Disease</h3>
+                <p>Overview: CH_29</p>
+                <button class="chapter-btn" data-chapter="CH_29">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Strategies for Enhancement in Food Production</h3>
+                <p>Overview: CH_30</p>
+                <button class="chapter-btn" data-chapter="CH_30">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Microbes in Human Welfare</h3>
+                <p>Overview: CH_31</p>
+                <button class="chapter-btn" data-chapter="CH_31">Start Quiz</button>
+            </div>
+            <div class="chapter-card">
+                <h3>Biotechnology: Principles and Processes</h3>
+                <p>Overview: CH_32</p>
+                <button class="chapter-btn" data-chapter="CH_32">Start Quiz</button>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Quiz Application. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Select all buttons
+const buttons = document.querySelectorAll('.chapter-btn');
+
+// Loop through each button and add a click event listener
+buttons.forEach(button => {
+    button.addEventListener('click', (event) => {
+        // Get the chapter name from the data attribute
+        const chapterName = event.target.getAttribute('data-chapter');
+        
+        // Store the chapter name in sessionStorage
+        sessionStorage.setItem('selectedChapter', chapterName);
+
+        //console.log(Stored in session: ${chapterName});
+         // Redirect to the new URL (e.g., quiz.html)
+         window.location.href = 'final_quiz_interface.html';  // Replace 'quiz.html' with the desired URL
+    });
+});
+
+</script>
+</body>
+</html>
